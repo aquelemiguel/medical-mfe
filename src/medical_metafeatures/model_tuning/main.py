@@ -7,6 +7,7 @@ import cv2
 import os
 from tqdm import tqdm
 import numpy as np
+import imageio
 
 def makejpg(task, result_folder, size, task_path, output_path, image_dimensions = (224, 224)):
     count = 0
@@ -19,7 +20,9 @@ def makejpg(task, result_folder, size, task_path, output_path, image_dimensions 
             img = img[:,:,:,channel]
         for i in range(images_per_address):
             z = np.random.randint(int(img.shape[2]*0.25), int(img.shape[2]*0.75))
-            misc.imsave(os.path.join(output_path, '{}_{}/images/{}.png'.format(result_folder,task,count)),  cv2.resize(img[:,:,z].astype('float32'),(224,224)))
+            path = os.path.join(output_path, '{}_{}/images/{}.png'.format(result_folder,task,count))
+            image =  cv2.resize(img[:,:,z].astype('float32'),(224,224))
+            imageio.imwrite(path, image)
             count+=1
 
 def load_data(task, train_or_valid, path):
